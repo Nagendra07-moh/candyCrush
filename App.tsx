@@ -1,11 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Navigation from './src/navigation/Navigation'
 
 const App = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>App</Text>
-    </View>
+    <Navigation />
   )
 }
 
