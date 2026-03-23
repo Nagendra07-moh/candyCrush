@@ -7,11 +7,13 @@ import SplashScreen from '../screens/SplashScreen'
 import LevelScreen from '../screens/LevelScreen'
 import GameScreen from '../screens/GameScreen'
 import { navigationRef } from '../utils/NavigationUtil'
+import { SoundProvider } from './SoundContext'
 
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
   return (
+    <SoundProvider>
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
         <Stack.Screen name="Splash" component={SplashScreen}/>
@@ -20,6 +22,7 @@ const Navigation = () => {
         <Stack.Screen name="Game" component={GameScreen} options={{ animation: 'fade' }} />
       </Stack.Navigator>
     </NavigationContainer>
+    </SoundProvider>
   )
 }
 

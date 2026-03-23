@@ -8,14 +8,17 @@ import React,{useEffect} from 'react'
 import { commonStyles } from '../styles/commonStyles'
 import { screenHeight, screenWidth } from '../utils/Constants'
 import { useIsFocused } from '@react-navigation/native'
+import { useSound } from '../navigation/SoundContext'
 
 const HomeScreen:React.FC = () => {
-
   const isFocused = useIsFocused()
   const translateY = useSharedValue(-200)
 
+  const {playSound} = useSound()
+  
   useEffect(()=>{
       translateY.value = withTiming(0,{duration:3000})
+      playSound('bg',true)
   },[isFocused])
 
   const animatedStyle = useAnimatedStyle(()=>({

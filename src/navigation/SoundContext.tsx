@@ -1,5 +1,4 @@
 import React,{createContext,useState,useContext,ReactNode, Children} from "react";
-import SoundPlayer from "react-native-sound-player";
 import Video from "react-native-video";
 
 
@@ -26,11 +25,11 @@ const soundPaths:{[key:string]:string} = {
 
 
 const SoundProvider  = ({children}:SoundProviderProps) => {
-    const [sound,setSound] = useState<any[]>([]);
+    const [sounds,setSounds] = useState<any[]>([]);
     const playSound = (soundName: string, repeat: boolean) => {
         const soundPath = soundPaths[soundName]
         if(soundPath){
-            setSound((prevSound) => {
+            setSounds((prevSound) => {
                 const updatedSounds = prevSound?.filter((sound) => sound.id !== soundName)
 
                 return [
@@ -40,7 +39,7 @@ const SoundProvider  = ({children}:SoundProviderProps) => {
                         path:soundPath,
                         repeat
                     }
-                ]
+                ] 
             })
         }else{
             console.error(`Sound ${soundName} not found!!`)
@@ -49,16 +48,33 @@ const SoundProvider  = ({children}:SoundProviderProps) => {
 
 
     const stopSound = (soundName: string) => {
-        setSound((prevSound) => prevSound.filter((sound) => sound.id !== soundName));
+        setSounds((prevSound) => prevSound.filter((sound) => sound.id !== soundName));
     }
-
-
-
-
-
     return(
         <SoundContext.Provider value={{playSound,stopSound}}>
             {children}
+            {sounds?.map((sound) => (
+                <Video
+                  key={sound.id}
+                  source={sound.path}
+                  paused={false}
+                  repeat={sound.repeat}
+                  volume={0.4}
+                  muted={false}
+                  resizeMode="cover"
+                  style={{position:'absolute',width:0,height:0}}
+                />
+            ))}
         </SoundContext.Provider>
     )
 }
+
+const useSound =():SoundContextProps =>{
+    const context = useContext(SoundContext);
+    if(!context){
+        throw new Error('useSound must be used within a soundProvider')
+    }
+    return context;
+}
+
+export {SoundProvider,useSound};
