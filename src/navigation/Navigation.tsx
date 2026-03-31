@@ -13,7 +13,6 @@ const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
   return (
-    <SoundProvider>
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
         <Stack.Screen name="Splash" component={SplashScreen}/>
@@ -22,7 +21,6 @@ const Navigation = () => {
         <Stack.Screen name="Game" component={GameScreen} options={{ animation: 'fade' }} />
       </Stack.Navigator>
     </NavigationContainer>
-    </SoundProvider>
   )
 }
 

@@ -12,9 +12,10 @@ interface SoundProviderProps{
     children: ReactNode;
 }
 
-
+// container that holds shared values | like a Store in Redux
 const SoundContext = createContext<SoundContextProps | undefined>(undefined);
 
+// object that will hold the sound paths [key:path]
 const soundPaths:{[key:string]:string} = {
     ui: require('../assets/sfx/ui.mp3'),
     candy_shiffle: require('../assets/sfx/candy_shuffle.mp3'),
@@ -23,15 +24,23 @@ const soundPaths:{[key:string]:string} = {
     cheer: require('../assets/sfx/cheer.mp3')
 }
 
-
+// This will make sure that any component in the app can import function inside this provider (play/pause)
 const SoundProvider  = ({children}:SoundProviderProps) => {
     const [sounds,setSounds] = useState<any[]>([]);
+
+    // this will fill the sondPath with the object 
+    // {
+    //     id:soundName,
+    //     path:soundPath,
+    //     repeat
+    // }
+    // and updatedSounds make sure that no duplicate sonds gets filled in the state (sounds) back to back
+
     const playSound = (soundName: string, repeat: boolean) => {
         const soundPath = soundPaths[soundName]
         if(soundPath){
             setSounds((prevSound) => {
                 const updatedSounds = prevSound?.filter((sound) => sound.id !== soundName)
-
                 return [
                     ...updatedSounds,
                     {
@@ -46,7 +55,7 @@ const SoundProvider  = ({children}:SoundProviderProps) => {
         }
     }
 
-
+    // it stop the sound by removing the path from the soundPath so <Video/> do not have any
     const stopSound = (soundName: string) => {
         setSounds((prevSound) => prevSound.filter((sound) => sound.id !== soundName));
     }
@@ -69,6 +78,9 @@ const SoundProvider  = ({children}:SoundProviderProps) => {
     )
 }
 
+
+// this hook make sure that in the components that will use SondContex we dont have to import 
+// sondContext , just import this hook and destructure the function of SoundContext
 const useSound =():SoundContextProps =>{
     const context = useContext(SoundContext);
     if(!context){

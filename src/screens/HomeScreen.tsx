@@ -15,10 +15,10 @@ const HomeScreen:React.FC = () => {
   const translateY = useSharedValue(-200)
 
   const {playSound} = useSound()
-  
+
   useEffect(()=>{
       translateY.value = withTiming(0,{duration:3000})
-      playSound('bg',true)
+      // playSound('bg',true)
   },[isFocused])
 
   const animatedStyle = useAnimatedStyle(()=>({
