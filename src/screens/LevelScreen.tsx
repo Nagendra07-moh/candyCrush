@@ -66,14 +66,13 @@ const LevelScreen: FC = () => {
             <FlatList
               data={levels}
               keyExtractor={(item)=>item.id.toString()}
-              style={levelStyles.backIcon}
               renderItem={renderItems}
               numColumns={2}
               columnWrapperStyle={levelStyles.columnWrapper}
               ListFooterComponent={
                 <View style={levelStyles.comingSoonContainer}>
                   <Image source={require('../assets/images/doddle.png')}  style={levelStyles.doddle}/>
-                  <Text>Coming Soon! Dev Cooking</Text>
+                  <Text style={levelStyles.comingSoonText}>Coming Soon! Dev Cooking</Text>
                 </View>
               }
             />
