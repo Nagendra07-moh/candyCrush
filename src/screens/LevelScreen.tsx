@@ -4,22 +4,31 @@ import { commonStyles } from '../styles/commonStyles'
 // import { SafeAreaView } from 'react-native-safe-area-context'
 import { levelStyles } from '../styles/levelStyles'
 import ScalePress from '../components/UI/ScalePress'
-import { goBack } from '../utils/NavigationUtil'
+import { goBack, navigate } from '../utils/NavigationUtil'
 import { useLevelStore } from '../state/useLevelStore'
+import { gameLevels } from '../utils/data'
 
+type LevelItem = {
+  id: number
+  unlocked: boolean
+  completed: boolean
+  highScore: number
+}
 
 
 const LevelScreen: FC = () => {
   const { levels } = useLevelStore()
 
-  type LevelItem = {
-    id: number
-    unlocked: boolean
-    completed: boolean
-    highScore: number
+  const levelPressHandler = (id:string) => {
+      const levelKey = `level${id}` as keyof GameLevels
+      const level = gameLevels[levelKey];
+      navigate('GameScreen',{
+        level:{...level,id:id}
+      })
   }
 
-  const renderItems: ListRenderItem<LevelItem> = ({ item }) => {
+
+  const renderItems: ListRenderItem<LevelItem> = ({ item }:any) => {
     const opacity = item.unlocked ? 1 : 0.5
     const emoji = item.completed ? '✅' : item.unlocked ? '🍭' : '🔒'
 
@@ -27,7 +36,7 @@ const LevelScreen: FC = () => {
       <ScalePress
         style={levelStyles.levelItem}
         onPress={() => {
-          if (!item.unlocked) return
+          if (!item.unlocked) levelPressHandler(item?.id)
         }}
       >
       <View style={{ opacity }}>
